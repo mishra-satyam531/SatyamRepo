@@ -8,7 +8,7 @@ public class TernaryOperator {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter number: ");
 		int n = scan.nextInt();
-		System.out.println((n%2 == 0)? "Even" : "Odd");
+		System.out.println((n%2 == 0)? "Even" : "Odd");//ternary operator
 	}
 
 }
