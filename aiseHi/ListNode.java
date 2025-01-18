@@ -46,37 +46,37 @@ public class ListNode{
     }
 }
 class Pair {
-	int row; 
-	int col;
-	Pair(int row, int col) {
-		this.row = row;
-		this.col = col;
+	int node; 
+	int parent;
+	Pair(int node, int parent) {
+		this.node = node;
+		this.parent = parent;
 	}
 }
-class Solution{
-    // DFS
-	private void dfs(int i, int j, char[][] grid, boolean[][] isVisited) {
-		int m = grid.length, n = grid[0].length;
-		isVisited[i][j] = true;
-		if(i-1 >= 0 && !isVisited[i-1][j] && grid[i-1][j] == '1')
-            dfs(i-1, j, grid, isVisited);
-		if(i+1 < m && !isVisited[i+1][j] && grid[i+1][j] == '1')
-            dfs(i+1, j, grid, isVisited);
-		if(j-1 >= 0 && !isVisited[i][j-1] && grid[i][j-1] == '1')
-            dfs(i, j-1, grid, isVisited);
-		if(j+1 < n && !isVisited[i][j+1] && grid[i][j+1] == '1')
-            dfs(i, j+1, grid, isVisited);
-	}
-    public int numIslands(char[][] grid) {
-    	int m = grid.length, n = grid[0].length, numOfIslands = 0;
-        boolean[][] isVisited = new boolean[m][n];
-        for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (grid[i][j] == '1' && !isVisited[i][j]) 
-                    dfs(i, j, grid, isVisited);
-				numOfIslands++;
+class Solution {
+	private boolean bfs(int i, ArrayList<ArrayList<Integer>> adj, boolean[] isVisited) {
+		Queue<Pair> q = new ArrayDeque<>();
+		q.add(new Pair(i, -1));
+		isVisited[i] = true;
+		while(!q.isEmpty()) {
+			Pair front = q.poll();
+			for (int ele : adj.get(front.node)) {
+				if(!isVisited[ele]) {
+					q.add(new Pair(ele, front.node));
+					isVisited[ele] = true;
+				}else if(ele != front.parent) return true; //cycle detected
 			}
 		}
-        return numOfIslands;
+		return false;
+	}
+    public boolean isCycle(ArrayList<ArrayList<Integer>> adj) {
+        int n = adj.size();
+        boolean[] isVisited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+			if(!isVisited[i]) {
+				if(bfs(i, adj, isVisited)) return true; //there is a cycle
+			}
+        }
+        return false; //no cycle
     }
 }

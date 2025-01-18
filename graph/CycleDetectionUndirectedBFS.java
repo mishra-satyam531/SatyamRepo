@@ -12,7 +12,7 @@ class Pair {
 		this.parent = parent;
 	}
 }
-public class CycleDetectionBFS {
+public class CycleDetectionUndirectedBFS {
 	public static void main(String[] args) {
 		
 	}
