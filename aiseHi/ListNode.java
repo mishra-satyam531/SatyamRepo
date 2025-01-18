@@ -2,6 +2,7 @@ package aiseHi;
 
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,16 +45,38 @@ public class ListNode{
         }
     }
 }
-class Solution {
-    // BRUTE FORCE
-    public int xorOperation(int n, int start) {
-        int[] arr = new int[n];
-        arr[0] = start;
-        int xor = arr[0];
-        for (int i = 1; i < n; i++) {
-			arr[i] = start + 2 * i;
-			xor ^= arr[i];
+class Pair {
+	int row; 
+	int col;
+	Pair(int row, int col) {
+		this.row = row;
+		this.col = col;
+	}
+}
+class Solution{
+    // DFS
+	private void dfs(int i, int j, char[][] grid, boolean[][] isVisited) {
+		int m = grid.length, n = grid[0].length;
+		isVisited[i][j] = true;
+		if(i-1 >= 0 && !isVisited[i-1][j] && grid[i-1][j] == '1')
+            dfs(i-1, j, grid, isVisited);
+		if(i+1 < m && !isVisited[i+1][j] && grid[i+1][j] == '1')
+            dfs(i+1, j, grid, isVisited);
+		if(j-1 >= 0 && !isVisited[i][j-1] && grid[i][j-1] == '1')
+            dfs(i, j-1, grid, isVisited);
+		if(j+1 < n && !isVisited[i][j+1] && grid[i][j+1] == '1')
+            dfs(i, j+1, grid, isVisited);
+	}
+    public int numIslands(char[][] grid) {
+    	int m = grid.length, n = grid[0].length, numOfIslands = 0;
+        boolean[][] isVisited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (grid[i][j] == '1' && !isVisited[i][j]) 
+                    dfs(i, j, grid, isVisited);
+				numOfIslands++;
+			}
 		}
-        return xor;
+        return numOfIslands;
     }
 }
