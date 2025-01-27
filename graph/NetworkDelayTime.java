@@ -1,7 +1,6 @@
 package graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -12,19 +11,17 @@ public class NetworkDelayTime {
 	}
 	public int networkDelayTime(int[][] times, int n, int k) {
         List<List<Duo>> adj = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i <= n; i++) {//nodes are from 1 to n and not from 0 to n-1
 			adj.add(new ArrayList<>());
 		}
         for (int i = 0; i < times.length; i++) {
-			adj.get(i).add(new Duo(times[i][1], times[i][2]));
+			adj.get(times[i][0]).add(new Duo(times[i][1], times[i][2]));
 		}
-        for(int i = 0; i < adj.size(); i++) {
-        	for (int j = 0; j < adj.get(i).size(); j++) {
-				System.out.print(adj.get(i).get(j).node + " " + adj.get(i).get(j).dist);
-			}
-        	System.out.println();
-        }
         int[] minDelay = new int[n+1];
+        for (int i = 1; i < n+1; i++) {
+        	if(i == k) continue;
+			minDelay[i] = Integer.MAX_VALUE;
+		}
         PriorityQueue<Duo> pq = new PriorityQueue<>();
         pq.add(new Duo(k, 0));
         while(!pq.isEmpty()) {
@@ -38,12 +35,9 @@ public class NetworkDelayTime {
         		}
         	}
         }
-        for(int ele : minDelay) {
-        	System.out.print(ele + " ");
-        }
         int minDelayTime = Integer.MIN_VALUE;
-        for (int i = 1; i < n+1; i++) {
-        	if(minDelay[i] == -1) return -1;
+        for (int i = 1; i < n+1; i++) {//0 node is not present in ques
+        	if(minDelay[i] == Integer.MAX_VALUE) return -1;
 			minDelayTime = Math.max(minDelayTime, minDelay[i]);
 		}
         return minDelayTime;
